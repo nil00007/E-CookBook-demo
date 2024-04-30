@@ -1,0 +1,261 @@
+<html>
+<head>
+<title>Main.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Main.java</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">java.util.LinkedList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Queue</span><span class="s0">;</span>
+
+<span class="s2">// TreeNode sınıfı, ağaçtaki düğümleri temsil eder</span>
+<span class="s0">class </span><span class="s1">TreeNode {</span>
+    <span class="s1">String data</span><span class="s0">;</span>
+    <span class="s1">TreeNode left</span><span class="s0">, </span><span class="s1">right</span><span class="s0">;</span>
+    <span class="s0">int </span><span class="s1">height</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">TreeNode(String data) {</span>
+        <span class="s0">this</span><span class="s1">.data = data</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.height = </span><span class="s3">1</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s2">// AVLTree sınıfı, AVL ağacını temsil eder</span>
+<span class="s0">class </span><span class="s1">AVLTree {</span>
+    <span class="s1">TreeNode root</span><span class="s0">;</span>
+
+    <span class="s2">// Ağacın yüksekliğini döndüren yardımcı metot</span>
+    <span class="s0">int </span><span class="s1">height(TreeNode node) {</span>
+        <span class="s0">if </span><span class="s1">(node == </span><span class="s0">null</span><span class="s1">)</span>
+            <span class="s0">return </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">node.height</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">// Yeni yüksekliği hesaplayan yardımcı metot</span>
+    <span class="s0">int </span><span class="s1">newHeight(TreeNode node) {</span>
+        <span class="s0">if </span><span class="s1">(node == </span><span class="s0">null</span><span class="s1">)</span>
+            <span class="s0">return </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s3">1 </span><span class="s1">+ Math.max(height(node.left)</span><span class="s0">, </span><span class="s1">height(node.right))</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">// Denge faktörünü hesaplayan yardımcı metot</span>
+    <span class="s0">int </span><span class="s1">balanceFactor(TreeNode node) {</span>
+        <span class="s0">if </span><span class="s1">(node == </span><span class="s0">null</span><span class="s1">)</span>
+            <span class="s0">return </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">height(node.left) - height(node.right)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">// Düğümleri sağa döndüren yardımcı metot</span>
+    <span class="s1">TreeNode rotateRight(TreeNode y) {</span>
+        <span class="s1">TreeNode x = y.left</span><span class="s0">;</span>
+        <span class="s1">TreeNode T2 = x.right</span><span class="s0">;</span>
+
+        <span class="s1">x.right = y</span><span class="s0">;</span>
+        <span class="s1">y.left = T2</span><span class="s0">;</span>
+
+        <span class="s1">y.height = newHeight(y)</span><span class="s0">;</span>
+        <span class="s1">x.height = newHeight(x)</span><span class="s0">;</span>
+
+        <span class="s0">return </span><span class="s1">x</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">// Düğümleri sola döndüren yardımcı metot</span>
+    <span class="s1">TreeNode rotateLeft(TreeNode x) {</span>
+        <span class="s1">TreeNode y = x.right</span><span class="s0">;</span>
+        <span class="s1">TreeNode T2 = y.left</span><span class="s0">;</span>
+
+        <span class="s1">y.left = x</span><span class="s0">;</span>
+        <span class="s1">x.right = T2</span><span class="s0">;</span>
+
+        <span class="s1">x.height = newHeight(x)</span><span class="s0">;</span>
+        <span class="s1">y.height = newHeight(y)</span><span class="s0">;</span>
+
+        <span class="s0">return </span><span class="s1">y</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">// AVL ağacına düğüm ekleme metodu</span>
+    <span class="s1">TreeNode insert(TreeNode node</span><span class="s0">, </span><span class="s1">String data) {</span>
+        <span class="s0">if </span><span class="s1">(node == </span><span class="s0">null</span><span class="s1">)</span>
+            <span class="s0">return new </span><span class="s1">TreeNode(data)</span><span class="s0">;</span>
+
+        <span class="s0">if </span><span class="s1">(data.compareTo(node.data) &lt; </span><span class="s3">0</span><span class="s1">)</span>
+            <span class="s1">node.left = insert(node.left</span><span class="s0">, </span><span class="s1">data)</span><span class="s0">;</span>
+        <span class="s0">else if </span><span class="s1">(data.compareTo(node.data) &gt; </span><span class="s3">0</span><span class="s1">)</span>
+            <span class="s1">node.right = insert(node.right</span><span class="s0">, </span><span class="s1">data)</span><span class="s0">;</span>
+        <span class="s0">else</span>
+            <span class="s0">return </span><span class="s1">node</span><span class="s0">; </span><span class="s2">// Aynı düğümü birden fazla eklemeyi önle</span>
+
+        <span class="s2">// Yükseklik güncellemesi</span>
+        <span class="s1">node.height = newHeight(node)</span><span class="s0">;</span>
+
+        <span class="s2">// Dengeliğin kontrolü</span>
+        <span class="s0">int </span><span class="s1">balance = balanceFactor(node)</span><span class="s0">;</span>
+
+        <span class="s2">// Sol-sol durumu</span>
+        <span class="s0">if </span><span class="s1">(balance &gt; </span><span class="s3">1 </span><span class="s1">&amp;&amp; data.compareTo(node.left.data) &lt; </span><span class="s3">0</span><span class="s1">)</span>
+            <span class="s0">return </span><span class="s1">rotateRight(node)</span><span class="s0">;</span>
+
+        <span class="s2">// Sağ-sağ durumu</span>
+        <span class="s0">if </span><span class="s1">(balance &lt; -</span><span class="s3">1 </span><span class="s1">&amp;&amp; data.compareTo(node.right.data) &gt; </span><span class="s3">0</span><span class="s1">)</span>
+            <span class="s0">return </span><span class="s1">rotateLeft(node)</span><span class="s0">;</span>
+
+        <span class="s2">// Sol-sağ durumu</span>
+        <span class="s0">if </span><span class="s1">(balance &gt; </span><span class="s3">1 </span><span class="s1">&amp;&amp; data.compareTo(node.left.data) &gt; </span><span class="s3">0</span><span class="s1">) {</span>
+            <span class="s1">node.left = rotateLeft(node.left)</span><span class="s0">;</span>
+            <span class="s0">return </span><span class="s1">rotateRight(node)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s2">// Sağ-sol durumu</span>
+        <span class="s0">if </span><span class="s1">(balance &lt; -</span><span class="s3">1 </span><span class="s1">&amp;&amp; data.compareTo(node.right.data) &lt; </span><span class="s3">0</span><span class="s1">) {</span>
+            <span class="s1">node.right = rotateRight(node.right)</span><span class="s0">;</span>
+            <span class="s0">return </span><span class="s1">rotateLeft(node)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return </span><span class="s1">node</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">// Ağacı dolaşarak yemek tarifini  yazdıran metot (inorder)</span>
+    <span class="s0">void </span><span class="s1">printRecipe(TreeNode node) {</span>
+        <span class="s0">if </span><span class="s1">(node != </span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s1">printRecipe(node.left)</span><span class="s0">;</span>
+            <span class="s1">System.out.println(node.data)</span><span class="s0">;</span>
+            <span class="s1">printRecipe(node.right)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s2">// Yemek tarifini yazdıran metot</span>
+    <span class="s0">void </span><span class="s1">printRecipe() {</span>
+        <span class="s1">printRecipe(root)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s2">// Tarifleri aşama aşama yazdıran metotların olduğu sınıf</span>
+<span class="s0">class </span><span class="s1">PrintSteps {</span>
+
+    <span class="s2">// Karnıyarık tarifini yazdıran metot</span>
+    <span class="s0">public static void </span><span class="s1">karnıyarıkPrintSteps() {</span>
+        <span class="s1">Queue&lt;String&gt; karnıyarıkRecipeSteps = </span><span class="s0">new </span><span class="s1">LinkedList&lt;&gt;()</span><span class="s0">;</span>
+
+        <span class="s2">// Karnıyarık tarifini kuyruğa ekliyoruz</span>
+        <span class="s1">karnıyarıkRecipeSteps.offer(</span><span class="s4">&quot;Bol suda yıkadığınız patlıcanları, pijamalı şekilde soyun ve tuzlu suda bekletin.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkRecipeSteps.offer(</span><span class="s4">&quot;3 yemek kaşığı zeytinyağını bir tavada kızdırın. Yemeklik doğradığınız 1 adet soğanı da üzerine ekleyip pembeleşene kadar kavurun. 2 adet doğranmış yeşil biberi ilave edip kavurmaya devam edin.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkRecipeSteps.offer(</span><span class="s4">&quot;350 gram orta yağlı kıymayı da ekleyin ve kavrulmakta olan soğanlarla birlikte renk alıp, suyunu çekene kadar pişirin.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkRecipeSteps.offer(</span><span class="s4">&quot;Aralarda karıştırıp pişirme işlemine devam ederek sırasıyla; 2 diş sarımsak, yarım tatlı kaşığı domates salçası, yarım tatlı kaşığı biber salçası, 1'er çay kaşığı tuz ve karabiber ekleyin.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkRecipeSteps.offer(</span><span class="s4">&quot;2 adet küp doğranmış domatesi ekleyin, 5 dakika kadar pişirdikten sonra ocağın altını kısın ve bir avuç doğranmış maydanozu ekleyip son kez karıştırarak ocaktan alın.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkRecipeSteps.offer(</span><span class="s4">&quot;Acısını alıp, pijamalı soyduğunuz 6 adet patlıcanı kızartın.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkRecipeSteps.offer(</span><span class="s4">&quot;Fırına dayanıklı bir kaba yerleştirin.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkRecipeSteps.offer(</span><span class="s4">&quot;Orta kısımlarından patlıcanları yarın.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkRecipeSteps.offer(</span><span class="s4">&quot;Hazırladığınız iç harçtan bol bol ekleyin.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkRecipeSteps.offer(</span><span class="s4">&quot;Patlıcanların üzerine birer cherry domates ve biber dilimleri ekleyin.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkRecipeSteps.offer(</span><span class="s4">&quot;Karnıyarıkları önceden ısıtılmış 170 derece fırında 20-25 dakika kadar pişirdikten sonra, sıcak olarak, dilerseniz tereyağlı pirinç pilavı eşliğinde servis edin, afiyet olsun!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s2">// Aşamaları yazdırma döngüsü</span>
+        <span class="s0">int </span><span class="s1">stepNumber = </span><span class="s3">1</span><span class="s0">;</span>
+        <span class="s0">while </span><span class="s1">(!karnıyarıkRecipeSteps.isEmpty()) {</span>
+            <span class="s1">System.out.println(</span><span class="s4">&quot;Adım &quot; </span><span class="s1">+ stepNumber + </span><span class="s4">&quot;: &quot; </span><span class="s1">+ karnıyarıkRecipeSteps.poll())</span><span class="s0">;</span>
+            <span class="s1">stepNumber++</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s0">public class </span><span class="s1">Main {</span>
+    <span class="s0">public static void </span><span class="s1">main(String[] args) {</span>
+
+        <span class="s2">// Tüm malzemeleri yemeklerin AVL treelerine ekliyoruz</span>
+        <span class="s1">AVLTree lasagnaTree = </span><span class="s0">new </span><span class="s1">AVLTree()</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Kıyma&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Sıvı Yağ&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Soğan&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Domates&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Salça&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Sarımsak&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Tuz&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Sıcak Su&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Tereyağ&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Süt&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Un&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Karabiber&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.root = lasagnaTree.insert(lasagnaTree.root</span><span class="s0">, </span><span class="s4">&quot;Kaşar Peyniri&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">AVLTree lentilSoupTree = </span><span class="s0">new </span><span class="s1">AVLTree()</span><span class="s0">;</span>
+        <span class="s1">lentilSoupTree.root = lentilSoupTree.insert(lentilSoupTree.root</span><span class="s0">, </span><span class="s4">&quot;kırmızı mercimek&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lentilSoupTree.root = lentilSoupTree.insert(lentilSoupTree.root</span><span class="s0">, </span><span class="s4">&quot;soğan&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lentilSoupTree.root = lentilSoupTree.insert(lentilSoupTree.root</span><span class="s0">, </span><span class="s4">&quot;havuç&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lentilSoupTree.root = lentilSoupTree.insert(lentilSoupTree.root</span><span class="s0">, </span><span class="s4">&quot;salça&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lentilSoupTree.root = lentilSoupTree.insert(lentilSoupTree.root</span><span class="s0">, </span><span class="s4">&quot;tuz&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lentilSoupTree.root = lentilSoupTree.insert(lentilSoupTree.root</span><span class="s0">, </span><span class="s4">&quot;karabiber&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lentilSoupTree.root = lentilSoupTree.insert(lentilSoupTree.root</span><span class="s0">, </span><span class="s4">&quot;kimyon&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lentilSoupTree.root = lentilSoupTree.insert(lentilSoupTree.root</span><span class="s0">, </span><span class="s4">&quot;su&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lentilSoupTree.root = lentilSoupTree.insert(lentilSoupTree.root</span><span class="s0">, </span><span class="s4">&quot;sıvı yağ&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lentilSoupTree.root = lentilSoupTree.insert(lentilSoupTree.root</span><span class="s0">, </span><span class="s4">&quot;toz biber&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lentilSoupTree.root = lentilSoupTree.insert(lentilSoupTree.root</span><span class="s0">, </span><span class="s4">&quot;tereyağı&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">AVLTree hunkarBegendiTree = </span><span class="s0">new </span><span class="s1">AVLTree()</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;kuzu but&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;soğan&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;sarımsak&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;zeytin yağı&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;domates&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;domates salçası&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;sıcak su&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;tuz&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;kaşar peyniri&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;tereyağı&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;süt&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;patlıcan&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;un&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;tuz&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.root = hunkarBegendiTree.insert(hunkarBegendiTree.root</span><span class="s0">, </span><span class="s4">&quot;karabiber&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">AVLTree karnıyarıkTree = </span><span class="s0">new </span><span class="s1">AVLTree()</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;patlıcan&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;zeytinyağı&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;soğan&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;yeşil biber&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;kıyma&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;sarımsak&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;biber salçası&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;domates salçası&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;tuz&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;karabiber&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;domates&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;sarımsak&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;yeşil sivri biber&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;maydonoz&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.root = karnıyarıkTree.insert(karnıyarıkTree.root</span><span class="s0">, </span><span class="s4">&quot;ayçiçek yağı&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+
+        <span class="s2">// Tarifi yazdır</span>
+        <span class="s1">System.out.println(</span><span class="s4">&quot;Lazanya Malzemeleri&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lasagnaTree.printRecipe()</span><span class="s0">;</span>
+        <span class="s1">System.out.println(</span><span class="s4">&quot;----------&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">System.out.println(</span><span class="s4">&quot;Mercimek Çorbası Malzemeleri&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">lentilSoupTree.printRecipe()</span><span class="s0">;</span>
+        <span class="s1">System.out.println(</span><span class="s4">&quot;----------&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">System.out.println(</span><span class="s4">&quot;Hünkar Beğendi Malzemeleri&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">hunkarBegendiTree.printRecipe()</span><span class="s0">;</span>
+        <span class="s1">System.out.println(</span><span class="s4">&quot;----------&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">System.out.println(</span><span class="s4">&quot;Karnıyarık Malzemeleri&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">karnıyarıkTree.printRecipe()</span><span class="s0">;</span>
+
+
+        <span class="s2">// Karnıyarık tarifi yazdır</span>
+        <span class="s1">PrintSteps.karnıyarıkPrintSteps()</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>
