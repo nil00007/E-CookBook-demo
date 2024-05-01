@@ -108,17 +108,17 @@ class AVLTree {
     }
 
     // Ağacı dolaşarak yemek tarifini  yazdıran metot (inorder)
-    void printRecipe(TreeNode node) {
+    void printIngredients(TreeNode node) {
         if (node != null) {
-            printRecipe(node.left);
+            printIngredients(node.left);
             System.out.println(node.data);
-            printRecipe(node.right);
+            printIngredients(node.right);
         }
     }
 
     // Yemek tarifini yazdıran metot
-    void printRecipe() {
-        printRecipe(root);
+    void printIngredients() {
+        printIngredients(root);
     }
 }
 
@@ -221,16 +221,16 @@ public class Main {
 
         // Tarifi yazdır
         System.out.println("Lazanya Malzemeleri");
-        lasagnaTree.printRecipe();
+        lasagnaTree.printIngredients();
         System.out.println("----------");
         System.out.println("Mercimek Çorbası Malzemeleri");
-        lentilSoupTree.printRecipe();
+        lentilSoupTree.printIngredients();
         System.out.println("----------");
         System.out.println("Hünkar Beğendi Malzemeleri");
-        hunkarBegendiTree.printRecipe();
+        hunkarBegendiTree.printIngredients();
         System.out.println("----------");
         System.out.println("Karnıyarık Malzemeleri");
-        karnıyarıkTree.printRecipe();
+        karnıyarıkTree.printIngredients();
 
 
         // Karnıyarık tarifi yazdır
