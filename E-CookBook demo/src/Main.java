@@ -107,7 +107,7 @@ class AVLTree {
         return node;
     }
 
-    // Ağacı dolaşarak yemek tarifini  yazdıran metot (inorder)
+    // Ağacı dolaşarak yemek malzemelerini  yazdıran metot (inorder)
     void printIngredients(TreeNode node) {
         if (node != null) {
             printIngredients(node.left);
@@ -116,7 +116,7 @@ class AVLTree {
         }
     }
 
-    // Yemek tarifini yazdıran metot
+    // Yemek malzemelerini yazdıran metot
     void printIngredients() {
         printIngredients(root);
     }
