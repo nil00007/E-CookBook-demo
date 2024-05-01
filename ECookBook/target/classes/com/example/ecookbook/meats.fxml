@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox fx:id="box" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="185.0" prefWidth="400.0" style="-fx-background-radius: 15;" styleClass="shadow" stylesheets="@stil.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.ecookbook.cardsController">
+   <children>
+      <ImageView fx:id="mealImage" fitHeight="138.0" fitWidth="182.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/yesilbezelye.jpg" />
+         </image>
+         <HBox.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </HBox.margin>
+      </ImageView>
+      <VBox prefHeight="155.0" prefWidth="180.0">
+         <children>
+            <Label fx:id="mealName" alignment="CENTER" prefHeight="87.0" prefWidth="197.0" text="Yeşil Bezelye " textFill="WHITE">
+               <font>
+                  <Font name="Comic Sans MS Bold" size="25.0" />
+               </font>
+            </Label>
+            <VBox prefHeight="54.0" prefWidth="180.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/star.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/star.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/star.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/star.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/star.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children></VBox>
+            <HBox prefHeight="58.0" prefWidth="180.0">
+               <children>
+                  <HBox prefHeight="52.0" prefWidth="180.0">
+                     <children>
+                        <ImageView fitHeight="32.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/like%20button.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="23.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <ImageView fitHeight="32.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/dislike%20button.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="1.0" />
+         </padding>
+         <HBox.margin>
+            <Insets left="1.0" />
+         </HBox.margin>
+         <opaqueInsets>
+            <Insets left="1.0" />
+         </opaqueInsets>
+      </VBox>
+   </children>
+</HBox>
