@@ -964,14 +964,9 @@ public class Main {
 
 
         // Tarifi yazdır
-        System.out.println("Lazanya Malzemeleri");
-        lasagnaTree.printIngredients();
-        System.out.println("----------");
+        
         System.out.println("Mercimek Çorbası Malzemeleri");
         lentilSoupTree.printIngredients();
-        System.out.println("----------");
-        System.out.println("Hünkar Beğendi Malzemeleri");
-        hunkarBegendiTree.printIngredients();
         System.out.println("----------");
         System.out.println("Karnıyarık Malzemeleri");
         karnıyarıkTree.printIngredients();
